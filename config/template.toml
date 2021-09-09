@@ -1,0 +1,19 @@
+clientId = ""
+clientSecret = ""
+signature = ""
+hostName = ""
+port = 443
+userIds = []
+
+[rabbitmq]
+protocol = "amqp"
+hostname = "localhost"
+port = "5672"
+username = "guest"
+password = "guest"
+heartbeat = 60 # seconds
+vhost = "/"
+exchange = "twitch-archiver"
+routingKey = ""
+queue = ""
+prefetch = 1
