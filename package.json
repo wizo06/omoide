@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js dev"
+    "listener": "node src/listener.js",
+    "listener-dev": "node src/listener.js dev",
+    "downloader": "node src/downloader.js"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.5",

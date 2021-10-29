@@ -1,5 +1,4 @@
 const { readFileSync } = require('fs')
-const { exec } = require('child_process')
 const { ApiClient } = require('twitch')
 const { ClientCredentialsAuthProvider } = require('twitch-auth')
 const { EventSubListener, ReverseProxyAdapter } = require('twitch-eventsub')
@@ -37,7 +36,8 @@ const apiClient = new ApiClient({ authProvider })
       logger.info(vods.data[0]?.url)
 
       const message = {
-        
+        url,
+        rcloneTarget,
       }
 
       chan.publish(
