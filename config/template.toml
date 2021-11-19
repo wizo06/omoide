@@ -1,6 +1,6 @@
 clientId = ""
 clientSecret = ""
-signature = ""
+secret = ""
 hostName = ""
 port = 443
 userIds = []
