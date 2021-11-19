@@ -1,7 +1,7 @@
 clientId = ""
 clientSecret = ""
-secret = ""
-hostName = ""
+secret = "" # randomly generated fixed string
+hostName = "" # example.com
 port = 443
 userIds = []
 
@@ -15,5 +15,5 @@ heartbeat = 60 # seconds
 vhost = "/"
 exchange = "twitch-archiver"
 routingKey = ""
-queue = ""
+queue = "twitch-archiver-download"
 prefetch = 1

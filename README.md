@@ -1,18 +1,21 @@
 # twitch-archiver
-
 ```
 cp config/template.toml config/config.toml
 npm i
 ```
+To get the user id of a channel, go to the respective stream and check for `gql` under Network tab of DevTools.
+
 # Local development
 ```
 npm run dev
 ```
+
 # Production
 ```
 npm start
 ```
 In a production environment, this repo assumes that a reverse proxy is setup already, and it's pointing to localhost with port `port` from the config file.
+
 # Limits
 [https://dev.twitch.tv/docs/eventsub](https://dev.twitch.tv/docs/eventsub)
 
