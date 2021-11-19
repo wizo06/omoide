@@ -7,12 +7,14 @@ To get the user id of a channel, go to the respective stream and check for `gql`
 
 # Local development
 ```
-npm run dev
+npm run listener-dev
+npm run downloader
 ```
 
 # Production
 ```
-npm start
+npm run listener
+npm run downloader
 ```
 In a production environment, this repo assumes that a reverse proxy is setup already, and it's pointing to localhost with port `port` from the config file.
 
