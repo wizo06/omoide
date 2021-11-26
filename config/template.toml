@@ -1,8 +1,8 @@
 clientId = ""
 clientSecret = ""
 secret = "" # randomly generated fixed string
-hostName = "" # example.com
-port = 443
+hostName = "example.com"
+port = 4000 # used for reverse proxy
 userIds = []
 
 [rabbitmq]

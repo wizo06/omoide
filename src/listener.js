@@ -23,13 +23,11 @@ const apiClient = new ApiClient({ authProvider })
   
     const adapter = (process.argv[2] === 'dev')
       ? new NgrokAdapter()
-      : new ReverseProxyAdapter({ hostName })
+      : new ReverseProxyAdapter({ hostName, port })
     
     const listener = new EventSubListener({ apiClient, adapter, secret })
   
-    (process.argv[2] === 'dev')
-      ? await listener.listen()
-      : await listener.listen(port)
+    listener.listen()
       
     for (const userId of userIds) {
       await listener.subscribeToStreamOfflineEvents(userId, async (event) => {
