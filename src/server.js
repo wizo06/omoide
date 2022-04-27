@@ -9,7 +9,7 @@ const { apiClient } = require("./twitch.js");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/", async (req, res) => {
+app.post("/add", async (req, res) => {
   try {
     logger.info(req.body);
     const user = await apiClient.users.getUserByName(req.body.cname);
@@ -22,7 +22,7 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
+app.get("/add", (req, res) => {
   res.end(form);
 });
 

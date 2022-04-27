@@ -14,7 +14,7 @@ exports.form = `
   </head>
   <html>
     <body>
-      <form id="form" action="/" method="post" target="_blank"  class="pure-form pure-form-aligned">
+      <form id="form" action="/add" method="post" target="_blank"  class="pure-form pure-form-aligned">
         <fieldset>
           <div class="pure-control-group">
             <label for="cname">Channel name</label>
