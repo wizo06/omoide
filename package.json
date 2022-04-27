@@ -1,16 +1,10 @@
 {
-  "scripts": {
-    "listener": "node src/listener.js",
-    "listener-dev": "node src/listener.js dev",
-    "downloader": "node src/downloader.js"
-  },
   "dependencies": {
-    "@iarna/toml": "^2.2.5",
-    "@twurple/api": "^5.0.9",
-    "@twurple/auth": "^5.0.9",
-    "@twurple/eventsub": "^5.0.9",
-    "@twurple/eventsub-ngrok": "^5.0.9",
-    "@wizo06/logger": "^1.3.0",
-    "amqplib": "^0.8.0"
+    "@twurple/api": "^5.1.4",
+    "@twurple/auth": "^5.1.4",
+    "@twurple/eventsub": "^5.1.4",
+    "@wizo06/logger": "^2.0.1",
+    "express": "^4.18.0",
+    "firebase-admin": "^10.1.0"
   }
 }

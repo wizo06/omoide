@@ -1,59 +1,39 @@
-const { readFileSync } = require('fs')
-const { ApiClient } = require('@twurple/api')
-const { ClientCredentialsAuthProvider } = require('@twurple/auth')
-const { EventSubListener, ReverseProxyAdapter } = require('@twurple/eventsub')
-const { NgrokAdapter } = require('@twurple/eventsub-ngrok')
-const { connect } = require('amqplib')
-const logger = require('@wizo06/logger')
+const { Logger } = require("@wizo06/logger");
+const { listener, apiClient } = require("./twitch.js");
+const { db } = require("./firestore.js");
 
-const { clientId, clientSecret, secret, userIds, hostName, port, rabbitmq } = require('@iarna/toml').parse(readFileSync('config/config.toml'))
+const logger = new Logger();
 
-const authProvider = new ClientCredentialsAuthProvider(clientId, clientSecret)
-const apiClient = new ApiClient({ authProvider })
-
-;(async () => {
+(async () => {
   try {
-    const conn = await connect(rabbitmq)
-    const chan = await conn.createChannel()
-    await chan.checkExchange(rabbitmq.exchange)
-  
-    if (process.argv[2] === 'dev') {
-      await apiClient.eventSub.deleteAllSubscriptions()
-    }
-  
-    const adapter = (process.argv[2] === 'dev')
-      ? new NgrokAdapter()
-      : new ReverseProxyAdapter({ hostName, port })
-    
-    const listener = new EventSubListener({ apiClient, adapter, secret })
-  
-    listener.listen()
-      
-    for (const userId of userIds) {
-      await listener.subscribeToStreamOfflineEvents(userId, async (event) => {
-        logger.info(`${event.broadcasterName}(${event.broadcasterId}) just went offline`)
-  
-        const vods = await apiClient.videos.getVideosByUser(userId, { type: 'archive' })
-        logger.info(vods.data[0]?.url)
-  
-        const message = {
-          url: vods.data[0]?.url,
-          userId,
+    await apiClient.eventSub.deleteAllSubscriptions();
+
+    await listener.listen();
+
+    db.collection("channels").onSnapshot((querySnapshot) => {
+      querySnapshot.docChanges().forEach(async (change) => {
+        try {
+          if (change.type === "added") {
+            await listener.subscribeToStreamOfflineEvents(change.doc.id, async (event) => {
+              const vods = await apiClient.videos.getVideosByUser(change.doc.id, { type: "archive" });
+              if (vods?.data[0]?.url) {
+              }
+            });
+            logger.success(`Listening to offline events from ${change.doc.data().name}`);
+            return;
+          }
+          if (change.type === "modified") {
+            return;
+          }
+          if (change.type === "removed") {
+            return;
+          }
+        } catch (e) {
+          logger.error(e);
         }
-  
-        chan.publish(
-          rabbitmq.exchange,
-          rabbitmq.routingKey,
-          Buffer.from(JSON.stringify(message)),
-          { persistent: true },
-        )
-        logger.success(`Published message to RabbitMQ`)
-      })
-  
-      logger.info(`Listening to offline events for ${userId}`)
-    }
+      });
+    });
+  } catch (e) {
+    logger.error(e);
   }
-  catch (e) {
-    console.error(e)
-  }
-})()
+})();
