@@ -3,8 +3,10 @@
     "@twurple/api": "^5.1.4",
     "@twurple/auth": "^5.1.4",
     "@twurple/eventsub": "^5.1.4",
+    "@twurple/eventsub-ngrok": "^5.1.5",
     "@wizo06/logger": "^2.0.1",
     "express": "^4.18.0",
-    "firebase-admin": "^10.1.0"
+    "firebase-admin": "^10.1.0",
+    "node-fetch": "^3.2.3"
   }
 }

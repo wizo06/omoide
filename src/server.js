@@ -6,6 +6,9 @@ const { db } = require("./firestore.js");
 const { form, success, failure } = require("./html.js");
 const { apiClient } = require("./twitch.js");
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.post("/", async (req, res) => {
   try {
     logger.info(req.body);
@@ -15,7 +18,7 @@ app.post("/", async (req, res) => {
     res.end(success);
   } catch (e) {
     logger.error(e);
-    res.end(failure)
+    res.end(failure);
   }
 });
 
@@ -23,4 +26,4 @@ app.get("/", (req, res) => {
   res.end(form);
 });
 
-app.listen(50058, () => logger.success(`Express server listening on port 50058`));
+app.listen(50059, () => logger.success(`Express server listening on port 50059`));
