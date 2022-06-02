@@ -38,7 +38,36 @@ const logger = new Logger();
                     await fetch(config.webhook, {
                       method: "POST",
                       body: JSON.stringify({
-                        content: `${timestamp}_${vod.id}_${vod.title} ${vod.url}`,
+                        embeds: [
+                          {
+                            description: vod.url,
+                            color: 0x00FFFF,
+                            thumbnail: {
+                              url: vod.thumbnailUrl
+                            },
+                            author: {
+                              name: vod.userName,
+                              icon_url: (await vod.getUser()).profilePictureUrl
+                            },
+                            fields: [
+                              {
+                                name: 'Date',
+                                value: timestamp,
+                                inline: true,
+                              },
+                              {
+                                name: 'ID',
+                                value: vod.id,
+                                inline: true,
+                              },
+                              {
+                                name: 'Title',
+                                value: vod.title,
+                                inline: false,
+                              }
+                            ]
+                          }
+                        ]
                       }),
                       headers: { "Content-Type": "application/json" },
                     });
