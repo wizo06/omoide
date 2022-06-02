@@ -6,38 +6,6 @@ const config = require("../config/config.json");
 
 const logger = new Logger();
 
-const eventHandler = async (event) => {
-  try {
-    logger.info(`${event.broadcasterName} went offline`);
-    const vods = await apiClient.videos.getVideosByUser(event.broadcasterId, { type: "archive" });
-    for (const vod of vods?.data) {
-      const doc = await db.collection("captured").doc(vod.id).get();
-      if (!doc.exists) {
-        const d = new Date(vod.creationDate);
-        const month = d.getMonth() + 1 < 10 ? `0${d.getMonth + 1}` : d.getMonth() + 1;
-        const date = d.getDate() < 10 ? `0${d.getDate}` : d.getDate();
-        const timestamp = `${d.getFullYear}${month}${date}`;
-        await db.collection("captured").doc(vod.id).set({
-          creationDate: timestamp,
-          title: vod.title,
-          url: vod.url,
-          userId: vod.userId,
-          userName: vod.userName,
-        });
-        await fetch(config.webhook, {
-          method: "POST",
-          body: JSON.stringify({
-            content: `${timestamp}_${vod.id}_${vod.title} ${vod.url}`,
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-      }
-    }
-  } catch (e) {
-    logger.error(e);
-  }
-};
-
 (async () => {
   try {
     await apiClient.eventSub.deleteAllSubscriptions();
